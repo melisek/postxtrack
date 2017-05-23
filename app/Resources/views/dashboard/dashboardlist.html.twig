@@ -1,0 +1,151 @@
+{# app/Resources/views/dashboard/dashboardlist.html.twig #}
+
+{% extends 'dashboard/dashboardbase.html.twig' %}
+
+{% block dashboardbody %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <h3>{{ user.getFirstName() }} {{ user.getLastName() }}</h3>
+            <p class="text-muted">{{ user.getEmail() }}</p>
+        </div>
+        <div class="col-md-9">
+            {% if uaddrs is defined %}
+                {% if uaddrs|length > 0 %}
+                    <a class="btn btn-success pull-right" href="{{ path('addressedit') }}">New Address</a>
+                    <h3>Addresses</h3>
+                    <hr/>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Postal code</th>
+                            <th>Country</th>
+                            <th>City</th>
+                            <th colspan="2">Street</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for uaddr in uaddrs %}
+                            {# @var uaddr \AppBundle\Entity\User_Address #}
+
+                            {% set addr = uaddr.getAddress() %}
+
+                            <tr {% if not addr.getAddressActive() %}class="text-muted"{% endif %}>
+                                <td>{{ addr.getAddressPostalCode() }}</td>
+                                <td>{{ addr.getAddressCountry() }}</td>
+                                <td>{{ addr.getAddressCity() }}</td>
+                                <td>{{ addr.getAddressStreet1() }}</td>
+                                <td>{{ addr.getAddressStreet2() }}</td>
+                                <td>
+                                    {% if addr.getAddressActive() %}
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true" title="Enabled"></span>
+                                    {% else %}
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" title="Disabled"></span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-default btn-xs" href="{{ path('addressedit', { 'addressId': addr.getAddressId() }) }}">Edit</a>
+                                    {% if addr.getAddressActive() %}
+                                        <a class="btn btn-default btn-xs" href="{{ path('addressdisable', { 'addressId': addr.getAddressId() }) }}">Disable</a>
+                                    {% else %}
+                                        <a class="btn btn-default btn-xs" href="{{ path('addressenable', { 'addressId': addr.getAddressId() }) }}">Enable</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                {%  endif %}
+            {%  endif %}
+        </div>
+    </div>
+
+    {% if recparcels is defined %}
+        {% if recparcels|length > 0 %}
+            <a class="btn btn-success pull-right" href="{{ path('parceltrack') }}">Track</a>
+            <h3>Parcels received</h3>
+            <hr/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Tracking code</th>
+                    <th><span class="glyphicon glyphicon-import" aria-hidden="true"></span> <strong>From</strong></th>
+                    <th>Postal code</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th colspan="2">Street</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for parcel in recparcels %}
+                    {# @var parcel \AppBundle\Entity\Parcel #}
+
+                    {% set sender = parcel.getSenderAddress().getUser().getEmail() %}
+                    {% set senderaddr = parcel.getSenderAddress().getAddress() %}
+
+                    <tr>
+                        <td><a href="{{ path('parceltrackcode', { 'parcel_code': parcel.getParcelCode() }) }}">{{ parcel.getParcelCode() }}</a></td>
+                        <td>{{ sender }}</td>
+                        <td>{{ senderaddr.getAddressPostalCode() }}</td>
+                        <td>{{ senderaddr.getAddressCountry() }}</td>
+                        <td>{{ senderaddr.getAddressCity() }}</td>
+                        <td>{{ senderaddr.getAddressStreet1() }}</td>
+                        <td>{{ senderaddr.getAddressStreet2() }}</td>
+                        <td><a class="btn btn-default btn-xs" href="{{ path('parceltrackcode', { 'parcel_code': parcel.getParcelCode() }) }}">Track</a></td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        {%  endif %}
+    {%  endif %}
+
+    {% if sentparcels is defined %}
+        {% if sentparcels|length > 0 %}
+            <a class="btn btn-success pull-right" href="{{ path('parcelpost') }}">Post new</a>
+            <h3>Parcels sent</h3>
+            <hr/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Tracking code</th>
+                    <th><span class="glyphicon glyphicon-export" aria-hidden="true"></span> <strong>To</strong></th>
+                    <th>Postal code</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th colspan="2">Street</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for parcel in sentparcels %}
+                    {# @var parcel \AppBundle\Entity\Parcel #}
+
+                    {% set recipient = parcel.getRecAddress().getUser().getEmail() %}
+                    {% set recaddr = parcel.getRecAddress().getAddress() %}
+
+                    <tr>
+                        <td><a href="{{ path('parceltrackcode', { 'parcel_code': parcel.getParcelCode() }) }}">{{ parcel.getParcelCode() }}</a></td>
+                        <td>{{ recipient }}</td>
+                        <td>{{ recaddr.getAddressPostalCode() }}</td>
+                        <td>{{ recaddr.getAddressCountry() }}</td>
+                        <td>{{ recaddr.getAddressCity() }}</td>
+                        <td>{{ recaddr.getAddressStreet1() }}</td>
+                        <td>{{ recaddr.getAddressStreet2() }}</td>
+                        <td><a class="btn btn-default btn-xs" href="{{ path('parceltrackcode', { 'parcel_code': parcel.getParcelCode() }) }}">Track</a></td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        {%  endif %}
+    {%  endif %}
+
+{% endblock %}

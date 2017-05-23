@@ -1,0 +1,49 @@
+{# app/Resources/views/depots/depotlist.html.twig #}
+
+{% extends 'depots/depotbase.html.twig' %}
+
+{% block depotbody %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Postal code</th>
+                <th>Country</th>
+                <th>City</th>
+                <th colspan="2">Street</th>
+                <th>Enabled</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for depot in depotlist %}
+                {# @var depot \AppBundle\Entity\Depot #}
+                <tr {% if not depot.getActive() %}class="text-muted"{% endif %}>
+                    <td>{{ depot.getDepotCode() }}</td>
+                    <td>{{ depot.getDepotAddress().getAddressPostalCode() }}</td>
+                    <td>{{ depot.getDepotAddress().getAddressCountry() }}</td>
+                    <td>{{ depot.getDepotAddress().getAddressCity() }}</td>
+                    <td>{{ depot.getDepotAddress().getAddressStreet1() }}</td>
+                    <td>{{ depot.getDepotAddress().getAddressStreet2() }}</td>
+                    <td>
+                    {% if depot.getActive() %}
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-default btn-xs" href="{{ path('depotedit', { 'depotId': depot.getDepotId() }) }}">Edit</a>
+                        {% if depot.getActive() %}
+                            <a class="btn btn-default btn-xs" href="{{ path('depotdel', { 'depotId': depot.getDepotId() }) }}">Disable</a>
+                        {% else %}
+                            <a class="btn btn-default btn-xs" href="{{ path('depotenable', { 'depotId': depot.getDepotId() }) }}">Enable</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a class="btn btn-success" href="{{ path('depotedit') }}">New depot</a></p>
+
+{% endblock %}

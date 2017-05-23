@@ -1,0 +1,30 @@
+{# app/Resources/views/statuses/statuslist.html.twig #}
+
+{% extends 'statuses/statusbase.html.twig' %}
+
+{% block statusbody %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for status in statuslist %}
+                {# @var status \AppBundle\Entity\Status #}
+                <tr>
+                    <td>{{ status.getStatusName() }}</td>
+                    <td>{{ status.getStatusDesc() }}</td>
+                    <td>
+                        <a class="btn btn-default btn-xs" href="{{ path('statusedit', { 'statusId': status.getStatusId() }) }}">Edit</a>
+                        <a class="btn btn-default btn-xs" href="{{ path('statusdel', { 'statusId': status.getStatusId() }) }}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a class="btn btn-success" href="{{ path('statusedit') }}">New status</a></p>
+
+{% endblock %}

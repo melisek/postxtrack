@@ -1,0 +1,80 @@
+<?php
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="users_addresses")
+ * @ORM\HasLifecycleCallbacks
+ */
+class User_Address
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
+     */
+    private $user;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Address")
+     * @ORM\JoinColumn(name="address_id", referencedColumnName="address_id")
+     */
+    private $address;
+
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return User_Address
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param Address $address
+     * @return User_Address
+     */
+    public function setAddress(Address $address = null)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

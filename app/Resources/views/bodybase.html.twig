@@ -1,0 +1,114 @@
+{# app/Resources/views/bodybase.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Post×Track</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                {% set currentroute = app.request.get('_route') %}
+                <ul class="nav navbar-nav">
+                    <li {% if currentroute in ['parcelpost'] %} class="active" {% endif %}>
+                        <a href="/parcels/post">Post</a>
+                    </li>
+                    <li {% if currentroute in ['parceltrack'] %} class="active" {% endif %}>
+                        <a href="/parcels/track">Track</a>
+                    </li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li {% if currentroute in ['parcellist', 'parceledit'] %} class="active" {% endif %}>
+                                    <a href="/parcels/list">Parcel</a>
+                                </li>
+                                <li {% if currentroute in ['statuslist', 'statusedit'] %} class="active" {% endif %}>
+                                    <a href="/statuses/list">Status</a>
+                                </li>
+                                <li {% if currentroute in ['depotlist','depotedit'] %} class="active" {% endif %}>
+                                    <a href="/depots/list">Depot</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li>
+                            <a href="/dashboard">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                {{ app.user.username }}
+                            </a>
+                        </li>
+                        <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                        <li {% if currentroute in ['login_form'] %} class="active" {% endif %}>
+                            <a href="/login">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                Login
+                            </a>
+                        </li>
+                        <li {% if currentroute in ['user_registration'] %} class="active" {% endif %}>
+                            <a href="/register">Register</a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-4">
+                <h1>{% block pagetitle %}{% endblock %}</h1>
+            </div>
+
+            <div class="col-md-4">
+                {% for flash_message in app.session.flashbag.get('notice') %}
+                    <div class="alert alert-success text-center alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ flash_message }}
+                    </div>
+                {% endfor %}
+
+                {% for flash_message in app.session.flashbag.get('warning') %}
+                    <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ flash_message }}
+                    </div>
+                {% endfor %}
+
+                {% if error.messageKey is defined %}
+                    <div class="alert alert-danger text-center alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <hr />
+
+        {% block content %}{% endblock %}
+
+    </div>
+    <hr/>
+    <footer class="container">
+        <p class="text-center text-muted">2017 Post×Track</p>
+    </footer>
+
+{% endblock %}

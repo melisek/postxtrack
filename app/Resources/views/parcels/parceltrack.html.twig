@@ -1,0 +1,32 @@
+{# app/Resources/views/parcels/parceltrack.html.twig #}
+
+{% extends 'bodybase.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{# {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %} #}
+
+{% block title %}
+    Post×Track - Track
+{% endblock %}
+
+{% block pagetitle %}
+    Track
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+
+            {{ form_start(form, {'attr': {'class': 'form-inline'}} ) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+    {% block parceldata %}
+    {% endblock %}
+
+{% endblock %}
+

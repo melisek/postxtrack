@@ -1,0 +1,17 @@
+{# app/Resources/views/addresses/addressform.html.twig #}
+
+{% extends 'addresses/addressbase.html.twig' %}
+
+{% block addressbody %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <br/>
+            <input class="btn btn-success" name="submit" type="submit" value="Save"/> &nbsp;
+            <a href="/dashboard" class="btn btn-default">Back to dashboard</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

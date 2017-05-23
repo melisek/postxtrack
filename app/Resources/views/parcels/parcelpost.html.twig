@@ -1,0 +1,25 @@
+{# app/Resources/views/parcels/parcelpost.html.twig #}
+
+{% extends 'parcels/parcelbase.html.twig' %}
+
+{% block title %}
+    Post×Track - Post
+{% endblock %}
+
+{% block pagetitle %}
+    Post
+{% endblock %}
+
+{% block parcelbody %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <br/>
+            <input class="btn btn-success" name="submit" type="submit" value="Post"/>
+            <a href="/addresses/edit" class="btn btn-default">Add address</a>&nbsp;
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

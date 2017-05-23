@@ -1,0 +1,17 @@
+{# app/Resources/views/depots/depotform.html.twig #}
+
+{% extends 'depots/depotbase.html.twig' %}
+
+{% block depotbody %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <br/>
+            <input class="btn btn-success" name="submit" type="submit" value="Save"/> &nbsp;
+            <a href="/depots/list" class="btn btn-default">Back to list</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
